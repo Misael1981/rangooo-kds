@@ -60,3 +60,11 @@ Ele substitui ou complementa as impressões térmicas, permitindo que a equipe d
 - **Modo Fullscreen / Dark Mode Obrigatório:** Contraste alto para leitura rápida à distância em ambiente de cozinha.
 - **Interação Amigável para Touchscreen e Atalhos de Teclado:** Botões grandes para toque com dedos/luvas ou atalhos numéricos no teclado.
 - **Tratamento de Desconexão / Offline:** Indicador de status de rede visual (online/offline) e reconexão automática sem perder estado.
+
+```
+app/
+ └── [slug]/
+       ├── login/
+       │    └── page.tsx  <-- Tela para digitar o PIN
+       └── page.tsx       <-- A tela principal da cozinha (Protegida)
+```
