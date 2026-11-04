@@ -71,18 +71,19 @@ export default async function KdsMainPage({ params }: KdsMainPageProps) {
 
   // 4. O JSX fica totalmente fora do try/catch, limpo e seguro!
   return (
-    <div className="p-4 space-y-4">
-      <div className="flex items-center justify-between">
-        <BreadcrumbKDS />
-        <div className="flex items-center gap-2">
-          <ModeToggle />
-          <OpenSheetButton slug={slug} />
+    <div className="page-bg">
+      <div className="relative z-10 p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <BreadcrumbKDS />
+          <div className="flex items-center gap-2">
+            <ModeToggle />
+            <OpenSheetButton slug={slug} />
+          </div>
         </div>
-      </div>
+        <h1 className="text-2xl font-bold">Painel KDS - {restaurant.name}</h1>
 
-      <h1 className="text-2xl font-bold">Painel KDS - {restaurant.name}</h1>
-      {/* Aqui entra a listagem de pedidos da cozinha */}
-      <StationsGrid stations={restaurant.kdsStations} />
+        <StationsGrid stations={restaurant.kdsStations} />
+      </div>
     </div>
   );
 }
