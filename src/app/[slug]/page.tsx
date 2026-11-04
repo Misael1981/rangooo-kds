@@ -2,6 +2,9 @@ import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
+import ModeToggle from "@/components/ModeToggle";
+import BreadcrumbKDS from "@/components/BreadcrumbKDS";
+import StationsGrid from "@/components/StationsGrid";
 
 interface KdsMainPageProps {
   params: Promise<{
@@ -17,7 +20,26 @@ export default async function KdsMainPage({ params }: KdsMainPageProps) {
   // 1. Valida se o restaurante existe pelo slug
   const restaurant = await db.restaurant.findUnique({
     where: { slug },
-    select: { id: true, name: true },
+    select: {
+      id: true,
+      name: true,
+      kdsUsers: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      kdsStations: {
+        select: {
+          id: true,
+          name: true,
+          order: true,
+          estimatedMinutes: true,
+          active: true,
+        },
+        orderBy: { order: "asc" },
+      },
+    },
   });
 
   if (!restaurant) {
@@ -48,9 +70,15 @@ export default async function KdsMainPage({ params }: KdsMainPageProps) {
 
   // 4. O JSX fica totalmente fora do try/catch, limpo e seguro!
   return (
-    <div className="p-8">
+    <div className="p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <BreadcrumbKDS />
+        <ModeToggle />
+      </div>
+
       <h1 className="text-2xl font-bold">Painel KDS - {restaurant.name}</h1>
       {/* Aqui entra a listagem de pedidos da cozinha */}
+      <StationsGrid stations={restaurant.kdsStations} />
     </div>
   );
 }
