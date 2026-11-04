@@ -18,7 +18,7 @@ export default async function LoginPage({ params }: PageProps) {
   const { slug } = await params;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-zinc-50 p-4 md:p-8">
+    <div className="min-h-screen w-full flex items-center justify-center bg-zinc-50 p-4 md:p-6">
       {/* Card principal: largura máxima para não ficar esticado em tablets landscape */}
       <Card className="w-full max-w-md shadow-xl border-t-8 border-t-red-600 bg-white gap-2">
         <CardHeader className="space-y-2 flex flex-col items-center ">

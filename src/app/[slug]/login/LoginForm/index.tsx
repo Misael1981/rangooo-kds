@@ -68,7 +68,7 @@ const LoginForm = ({ slug }: LoginFormProps) => {
               placeholder="Ex: chef_joao"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="pl-10   rounded-lg border-zinc-300 focus-visible:ring-red-600" // h-14 = botão alto para tablets
+              className="pl-10 text-black  rounded-lg border-zinc-300 focus-visible:ring-red-600"
               disabled={isLoading}
               autoComplete="username"
             />
@@ -88,7 +88,7 @@ const LoginForm = ({ slug }: LoginFormProps) => {
               placeholder="••••••••"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
-              className="pl-10 rounded-lg border-zinc-300 focus-visible:ring-red-600"
+              className="pl-10 rounded-lg text-black border-zinc-300 focus-visible:ring-red-600"
               disabled={isLoading}
               autoComplete="current-password"
             />

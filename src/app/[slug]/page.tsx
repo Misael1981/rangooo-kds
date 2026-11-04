@@ -5,6 +5,7 @@ import { jwtVerify } from "jose";
 import ModeToggle from "@/components/ModeToggle";
 import BreadcrumbKDS from "@/components/BreadcrumbKDS";
 import StationsGrid from "@/components/StationsGrid";
+import OpenSheetButton from "@/components/OpenSheetButton";
 
 interface KdsMainPageProps {
   params: Promise<{
@@ -73,7 +74,10 @@ export default async function KdsMainPage({ params }: KdsMainPageProps) {
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
         <BreadcrumbKDS />
-        <ModeToggle />
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+          <OpenSheetButton slug={slug} />
+        </div>
       </div>
 
       <h1 className="text-2xl font-bold">Painel KDS - {restaurant.name}</h1>
