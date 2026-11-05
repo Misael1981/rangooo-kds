@@ -43,7 +43,7 @@ const LoginForm = ({ slug }: LoginFormProps) => {
         return;
       }
 
-      router.push(`/${slug}`);
+      router.push(`/${slug}/${result.userId}`);
     } catch (err) {
       console.error(err);
       setError("Usuário ou senha inválidos.");

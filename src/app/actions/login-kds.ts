@@ -12,7 +12,9 @@ const kdsLoginSchema = z.object({
 
 export type KdsLoginInput = z.infer<typeof kdsLoginSchema>;
 
-type ActionResult = { success: true } | { success: false; error: string };
+type ActionResult =
+  | { success: true; userId: string }
+  | { success: false; error: string };
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
 
@@ -28,7 +30,7 @@ export async function loginKds(
 
   const { username, pin } = parsed.data;
 
-  // 2. Busca o restaurante para garantir o isolamento multi-tenant
+  // 2. Busca o restaurante
   const restaurant = await db.restaurant.findUnique({
     where: { slug },
     select: { id: true },
@@ -38,7 +40,7 @@ export async function loginKds(
     return { success: false, error: "Estabelecimento não encontrado." };
   }
 
-  // 3. Busca o operador ativo no banco
+  // 3. Busca o operador
   const user = await db.kdsUser.findUnique({
     where: {
       restaurantId_username: {
@@ -52,13 +54,11 @@ export async function loginKds(
     return { success: false, error: "Usuário não encontrado ou inativo." };
   }
 
-  // 4. Validação do PIN (Compara o hash ou o valor cadastrado)
-  // Nota: Se você usou bcrypt/argon2 no cadastro, substitua por bcrypt.compareSync(pin, user.pinHash)
   if (user.pinHash !== pin) {
     return { success: false, error: "PIN incorreto." };
   }
 
-  // 5. Gera o Token JWT com a biblioteca jose
+  // 4. Gera o Token JWT
   const token = await new SignJWT({
     userId: user.id,
     restaurantId: restaurant.id,
@@ -67,18 +67,18 @@ export async function loginKds(
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("12h") // Sessão do turno da cozinha (12 horas)
+    .setExpirationTime("12h")
     .sign(JWT_SECRET);
 
-  // 6. Grava o cookie HTTP-only seguro
+  // 5. Grava o cookie
   const cookieStore = await cookies();
   cookieStore.set("kds_token", token, {
-    httpOnly: true, // Protege contra XSS (JS no browser não acessa)
+    httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 12, // 12 horas em segundos
+    maxAge: 60 * 60 * 12,
   });
 
-  return { success: true };
+  return { success: true, userId: user.id };
 }

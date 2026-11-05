@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import ModeToggle from "@/components/ModeToggle";
 import BreadcrumbKDS from "@/components/BreadcrumbKDS";
-import StationsGrid from "@/components/StationsGrid";
 import OpenSheetButton from "@/components/OpenSheetButton";
 
 interface KdsMainPageProps {
@@ -81,8 +80,6 @@ export default async function KdsMainPage({ params }: KdsMainPageProps) {
           </div>
         </div>
         <h1 className="text-2xl font-bold">Painel KDS - {restaurant.name}</h1>
-
-        <StationsGrid stations={restaurant.kdsStations} />
       </div>
     </div>
   );
